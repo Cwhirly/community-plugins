@@ -14,6 +14,11 @@ local fmt = require("./lib/format.luau")
 local holiday = require("./lib/holiday.luau")
 local plugin = require("./lib/plugin.luau")
 
+-- Weekday names, date titles and countdowns follow the shell language; the
+-- calendar's own vocabulary stays Chinese whatever the locale is.
+local locale = require("./lib/locale.luau")
+fmt.set_locale(locale.chinese() and "zh" or "en")
+
 local function config(key, fallback)
     local value = noctalia.getConfig(key)
     if value == nil then

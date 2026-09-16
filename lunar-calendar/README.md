@@ -102,6 +102,12 @@ and `today` on the panel jumps back to the current month.
 
 ## Notes
 
+**Languages.** The plugin's own date formats - weekday names, `Sep 16` / `9月16日`,
+countdowns, the month title and the panel's weekday header - follow the shell's
+language (its `general.language` setting, falling back to `LC_ALL`/`LC_TIME`/`LANG`).
+The calendar's vocabulary is Chinese by nature and stays that way: lunar day names,
+the 24 solar terms, 干支, and the statutory holiday names that come from holiday-cn.
+
 **Network.** Only `holiday-sync` talks to the network: one HTTPS `GET` per tracked
 year (the current one and the next) to `cdn.jsdelivr.net` or
 `raw.githubusercontent.com`, both serving

@@ -10,6 +10,11 @@ local lunar = require("./lib/lunar.luau")
 local fmt = require("./lib/format.luau")
 local holiday = require("./lib/holiday.luau")
 
+-- Weekday names, date titles and countdowns follow the shell language; the
+-- calendar's own vocabulary stays Chinese whatever the locale is.
+local locale = require("./lib/locale.luau")
+fmt.set_locale(locale.chinese() and "zh" or "en")
+
 local function config(key, fallback)
     local value = noctalia.getConfig(key)
     if value == nil then
@@ -29,7 +34,6 @@ local WEEKDAY_H = 18
 -- Fully transparent, for props that must be present in every render but should
 -- draw nothing.
 local NONE = "#00000000"
-local WEEKDAY_LABELS = { "一", "二", "三", "四", "五", "六", "日" }
 local COLOR_BY_KIND = { term = "primary", lunar = "tertiary", solar = "secondary" }
 
 local viewYear, viewMonth
@@ -240,7 +244,7 @@ local function weekday_header()
             justify = "center",
         }, {
             ui.label({
-                text = WEEKDAY_LABELS[iso],
+                text = fmt.weekday_initial(iso),
                 fontSize = 11,
                 textAlign = "center",
                 color = iso >= 6 and "error" or "on_surface_variant",
