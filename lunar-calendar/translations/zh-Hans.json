@@ -24,7 +24,7 @@
       "description": "小组件第一段文字显示什么。",
       "options": {
         "solar": "公历日期（如 9月16日）",
-        "lunar": "农历日期（如 八月初七）",
+        "lunar": "农历日期（如 八月初六）",
         "both": "公历 + 农历"
       }
     },
@@ -53,7 +53,6 @@
   "panel": {
     "today": "今天",
     "festival": "节日",
-    "holidays": "本月假期",
     "next_holiday": "下个假期",
     "prev_year": "上一年",
     "prev_month": "上一月",

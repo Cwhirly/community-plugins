@@ -160,24 +160,32 @@ end
 
 local function tooltip_rows(info)
     local rows = {
-        { noctalia.tr("widget.gregorian"), fmt.solar_ymd(info.y, info.m, info.d) .. " " .. fmt.weekday(info.weekday) },
+        {
+            key = noctalia.tr("widget.gregorian"),
+            value = fmt.solar_ymd(info.y, info.m, info.d) .. " " .. fmt.weekday(info.weekday),
+        },
     }
     local text = lunar_text(info)
     if text and info.lunar then
-        rows[#rows + 1] = { noctalia.tr("widget.lunar"), text }
+        rows[#rows + 1] = { key = noctalia.tr("widget.lunar"), value = text }
         rows[#rows + 1] = {
-            noctalia.tr("widget.ganzhi"),
-            string.format("%s年 %s日 · %s年", info.lunar.ganzhi_year, lunar.ganzhi_day(info.number), info.lunar.zodiac),
+            key = noctalia.tr("widget.ganzhi"),
+            value = string.format(
+                "%s年 %s日 · %s年",
+                info.lunar.ganzhi_year,
+                lunar.ganzhi_day(info.number),
+                info.lunar.zodiac
+            ),
         }
     end
     if info.term then
-        rows[#rows + 1] = { noctalia.tr("widget.term"), info.term }
+        rows[#rows + 1] = { key = noctalia.tr("widget.term"), value = info.term }
     end
     local upcoming = lunar.next_solar_term(info.y, info.m, info.d)
     if upcoming then
         rows[#rows + 1] = {
-            noctalia.tr("widget.next_term"),
-            string.format(
+            key = noctalia.tr("widget.next_term"),
+            value = string.format(
                 "%s %d月%d日 · %s",
                 upcoming.name,
                 upcoming.month,
@@ -192,12 +200,12 @@ local function tooltip_rows(info)
         festival_names[#festival_names + 1] = festival.name
     end
     if #festival_names > 0 then
-        rows[#rows + 1] = { noctalia.tr("widget.festival"), table.concat(festival_names, " · ") }
+        rows[#rows + 1] = { key = noctalia.tr("widget.festival"), value = table.concat(festival_names, " · ") }
     end
     if info.holiday then
         rows[#rows + 1] = {
-            info.holiday.off and noctalia.tr("widget.holiday") or noctalia.tr("widget.workday"),
-            info.holiday.off
+            key = info.holiday.off and noctalia.tr("widget.holiday") or noctalia.tr("widget.workday"),
+            value = info.holiday.off
                 and (info.holiday.name .. " " .. noctalia.tr("widget.on_leave"))
                 or (info.holiday.name .. " " .. noctalia.tr("widget.working")),
         }
@@ -206,16 +214,16 @@ local function tooltip_rows(info)
     if next_off then
         local year, month, day = lunar.civil_from_days(next_off.day_number)
         rows[#rows + 1] = {
-            noctalia.tr("widget.next_holiday"),
-            string.format("%s %d月%d日 · %s", next_off.name, month, day, fmt.days_phrase(next_off.in_days)),
+            key = noctalia.tr("widget.next_holiday"),
+            value = string.format("%s %d月%d日 · %s", next_off.name, month, day, fmt.days_phrase(next_off.in_days)),
         }
     end
     if holidayStatus == "loading" then
-        rows[#rows + 1] = { noctalia.tr("widget.holidays"), noctalia.tr("widget.loading") }
+        rows[#rows + 1] = { key = noctalia.tr("widget.holidays"), value = noctalia.tr("widget.loading") }
     elseif holidayStatus == "offline" then
-        rows[#rows + 1] = { noctalia.tr("widget.holidays"), noctalia.tr("widget.offline") }
+        rows[#rows + 1] = { key = noctalia.tr("widget.holidays"), value = noctalia.tr("widget.offline") }
     elseif holidayStatus == "disabled" then
-        rows[#rows + 1] = { noctalia.tr("widget.holidays"), noctalia.tr("widget.disabled") }
+        rows[#rows + 1] = { key = noctalia.tr("widget.holidays"), value = noctalia.tr("widget.disabled") }
     end
     return rows
 end
@@ -293,7 +301,9 @@ end
 
 function onIpc(event, _payload)
     if event == "refresh" then
-        noctalia.state.set("holiday-command", { action = "refresh", at = os.time() })
+        -- Milliseconds, so two refreshes in the same second are still different
+        -- values and the service's watcher fires again.
+        noctalia.state.set("holiday-command", { action = "refresh", at = noctalia.nowMs() })
         noctalia.notify(noctalia.tr("notify.title"), noctalia.tr("widget.refreshing"))
     elseif event == "copy" then
         onRightClick()

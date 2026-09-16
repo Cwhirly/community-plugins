@@ -29,7 +29,8 @@ to keep the plugin fully offline.
 | Gregorian date + weekday | the system clock | `9月16日 周三` |
 | Lunar date | baked-in astronomical tables, 1900-2100 | `八月初六`, `闰六月初一` |
 | 24 solar terms | the same tables, one per day of the year | `白露`, `冬至` |
-| Traditional festivals | lunar and solar rules | `春节` `元宵节` `端午节` `七夕` `中元节` `中秋节` `重阳节` `腊八节` `小年` `除夕` `清明节` `母亲节` `父亲节` `感恩节` |
+| Lunar festivals | lunar calendar rules | `春节` `元宵节` `龙抬头` `端午节` `七夕` `中元节` `中秋节` `重阳节` `腊八节` `小年` `除夕` |
+| Solar festivals | fixed dates, `清明节` from the term, and nth-weekday rules | `元旦` `情人节` `妇女节` `植树节` `劳动节` `青年节` `儿童节` `建党节` `建军节` `教师节` `国庆节` `万圣节` `平安夜` `圣诞节` `清明节` `母亲节` `父亲节` `感恩节` |
 | CN statutory holidays | `holiday-sync`, cached on disk | `国庆节` `休`, `班` |
 | 干支 / zodiac | sexagenary cycle anchored on a known 甲子 day | `丙午年 癸巳日 · 马年` |
 
@@ -90,6 +91,7 @@ noctalia msg panel-toggle cwhirly/lunar-calendar:panel
 noctalia msg plugin cwhirly/lunar-calendar:calendar focused refresh
 noctalia msg plugin cwhirly/lunar-calendar:calendar focused settings
 noctalia msg plugin cwhirly/lunar-calendar:calendar focused copy
+noctalia msg plugin cwhirly/lunar-calendar:panel all today
 noctalia msg plugin cwhirly/lunar-calendar:holiday-sync all refresh
 noctalia msg plugin cwhirly/lunar-calendar:holiday-sync all clear-cache
 ```
@@ -120,10 +122,10 @@ rows of plain day numbers and month lengths, produced by `tools/generate_data.py
 (shipped in this plugin's `tools/` directory) from
 [lunar_python](https://github.com/6tail/lunar-python), which implements the ShouXing
 寿星天文历 algorithms. The generator round-trips every one of the 73,384 days from
-1900-01-31 to 2100-12-31 back through that library before it writes the file, and
-the runtime maths is checked against the same source for 2,928 days. Lunar dates,
-solar terms and 干支 are supported for 1900-2100; the Gregorian grid renders any
-month the shell can reach.
+1900-01-31 to 2100-12-31 back through that library before it writes the file, so
+re-running it must leave `lib/data.luau` unchanged. Lunar dates, solar terms and
+干支 are supported for 1900-2100, and the panel's month navigation is clamped to
+that range.
 
 **Declarative UI gotchas** (both hit while building this plugin, both worked around
 in the code): the host applies only the props a render *contains*, so a dropped prop

@@ -2,8 +2,7 @@
 -- Chinese lunisolar calendar maths: solar <-> lunar conversion, the 24 solar
 -- terms, and traditional festivals.
 --
--- Pure module: it never touches `noctalia.*`, so it can be unit-tested with a
--- plain Luau interpreter (see tools/run_tests.sh).
+-- Pure module: it never touches `noctalia.*`, so it is unit-testable on its own.
 --
 -- Data comes from lib/data.luau, generated from the ShouXing astronomical
 -- algorithms and verified day-by-day for 1900-2100 (the generator ships in

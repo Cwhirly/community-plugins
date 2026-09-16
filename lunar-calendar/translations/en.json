@@ -24,7 +24,7 @@
       "description": "What the first text of the bar widget shows.",
       "options": {
         "solar": "Gregorian date (Sep 16)",
-        "lunar": "Lunar date (八月初七)",
+        "lunar": "Lunar date (八月初六)",
         "both": "Gregorian + lunar"
       }
     },
@@ -53,7 +53,6 @@
   "panel": {
     "today": "Today",
     "festival": "Festival",
-    "holidays": "This month",
     "next_holiday": "Next day off",
     "prev_year": "Previous year",
     "prev_month": "Previous month",

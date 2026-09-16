@@ -173,9 +173,6 @@ function onIpc(event, _payload)
         load_cache()
         publish()
         noctalia.notify(noctalia.tr("notify.title"), noctalia.tr("service.cache_cleared"))
-    elseif event == "forget" then
-        days = {}
-        publish()
     end
 end
 

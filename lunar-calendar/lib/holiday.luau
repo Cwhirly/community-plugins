@@ -245,28 +245,4 @@ function M.for_month(days, year, month)
     return out
 end
 
---- The list of consecutive day-off ranges overlapping a month, e.g.
---- `{ { name = "国庆节", from = 1, to = 8, off = true }, ... }`.
-function M.ranges(days, year, month)
-    local out = {}
-    if type(days) ~= "table" then
-        return out
-    end
-    local total = lunar.days_in_month(year, month)
-    local current
-    for day = 1, total + 1 do
-        local entry = day <= total and M.on(days, year, month, day) or nil
-        local continues = entry and current and entry.off == current.off and entry.name == current.name
-        if continues then
-            current.to = day
-        else
-            if current then
-                out[#out + 1] = current
-            end
-            current = entry and { name = entry.name, from = day, to = day, off = entry.off } or nil
-        end
-    end
-    return out
-end
-
 return M
